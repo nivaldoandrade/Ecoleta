@@ -85,7 +85,7 @@
       </ul>
     </p>
     <p>
-      <h6>Developed on Next Level Week #01 from <a href="<a href="https://rocketseat.com.br">RocketSeat</a></h6>
+      <h6>Developed on Next Level Week #01 from <a href="<a href="https://rocketseat.com.br">RocketSeat</a> by <a href="https://www.linkedin.com/in/diego-schell-fernandes/?originalSubdomain=br">Diego Fernandes.</a></h6>
     </p>
  </main>
 
