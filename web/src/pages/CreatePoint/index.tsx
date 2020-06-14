@@ -8,7 +8,7 @@ import Dropzone from '../../components/Dropzone';
 
 import './styles.css'; 
 
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowLeft, FiCheckCircle } from 'react-icons/fi';
 import logo from '../../assets/logo.svg'; 
 
 interface item {
@@ -35,6 +35,7 @@ const CreatePoint = () => {
     const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
     const [selectItems, setSelectItems]= useState<number[]>([]);
     const [selectedFile, setSelectedFile] = useState<File>();
+    const [resPost, setResPost] = useState<string>('initial');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -139,13 +140,13 @@ const CreatePoint = () => {
                 data.append('image', selectedFile);
             }
 
-       await api.post('points', data); 
+       const res = await api.post('points', data);
 
-       alert('Ponto de coleta criado!');
+       setResPost(res.statusText);
 
-       history.push('/');
+       setTimeout(() => {history.push('/')}, 5000);
     }
-    
+
     return (
         <div id="page-create-point">
             <header>
@@ -187,7 +188,8 @@ const CreatePoint = () => {
                         <div className="field">
                             <label htmlFor="whatsapp">Whatsapp</label>
                             <input 
-                                type="text" 
+                                type="text"
+                                placeholder="DD999999999" 
                                 name="whatsapp" 
                                 id="whatsapp"
                                 onChange={handleInputChange}
@@ -241,11 +243,23 @@ const CreatePoint = () => {
                                  <span>{item.title}</span>
                             </li>
                         ))}
-                    </ul>
+                    </ul>          
                 </fieldset>
-
                 <button type="submit">Cadastrar ponto de coletan</button>
             </form>
+            <div className={resPost.includes("initial") ? 'modal-overlay' : 'modal-overlay modal-active'}>
+             {/* <div className={"modal-overlay" resPost.includes('OK') ? "overlay-active" : ''"}> */}
+                <div className="overlay">
+                    <div className="overlay-content">
+                        <FiCheckCircle />
+                        <h1>Cadastro concluído!</h1>
+                        < Link to="/">
+                            < FiArrowLeft />
+                            Voltar para home
+                        </Link>
+                    </div>
+                </div>                          
+            </div>
         </div>
     );
 };

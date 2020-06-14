@@ -29,7 +29,7 @@ const Detail = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const routeParams = route.params as Params;
-    console.log(routeParams);
+
     const [data, setData] = useState<Data>({} as Data);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const Detail = () => {
     };
 
     function handleWhatsapp() {
-      Linking.openURL(`whatsapp://send?phone=${data.point.whatsapp}&text= Tenho interesse sobre a coleta de resíduos`);
+      Linking.openURL(`whatsapp://send?phone=+55${data.point.whatsapp}&text= Tenho interesse sobre a coleta de resíduos`);
     };
 
     function handleComposeEmail() {

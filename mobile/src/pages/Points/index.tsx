@@ -37,7 +37,7 @@ const Points = () => {
     const route = useRoute();
 
     const routeParams = route.params as Params;
-    console.log(routeParams);
+
     useEffect(() => {
       api.get('points', {
         params: {

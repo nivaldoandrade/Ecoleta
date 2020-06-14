@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
 import _default from 'expo/build/Notifications/Notifications';
-import Picker from 'react-native-picker-select';
+
 
 interface Uf {
   sigla: string,
@@ -16,14 +16,25 @@ interface Cities {
   nome: string,
 }
 
+interface Picker {
+  pickerUf: any,
+  pickerCity: any,
+  buttonSubmit: any,
+}
 
 const Home = () => {
+  
     const navigation = useNavigation();
 
     const [ufs, setUfs] = useState<string[]>([]);
     const [cities, setCities] = useState<string[]>([]);
     const [ufSelected, setUfSelected] = useState<string>();
     const [citySelected, setCitySelected] = useState<string>();
+    const [inputRefs, setInputRefs] = useState<Picker>({
+      pickerUf: null,
+      pickerCity: null,
+      buttonSubmit: null,
+    });
 
     useEffect(() => {
       axios.get<Uf[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
@@ -83,6 +94,13 @@ const Home = () => {
                 </View>
                 <View style={styles.footer}>              
                     <RNPickerSelect
+                      onDownArrow={() => {
+                        inputRefs.pickerCity.togglePicker();
+                      }}
+                      ref={el => {
+                        inputRefs.pickerUf = el;
+                      }}
+                      useNativeAndroidPickerStyle={false}
                       value={ufSelected}
                       style={{...pickerSelectStyles}}
                       onValueChange={value => setUfSelected(value)}
@@ -93,6 +111,12 @@ const Home = () => {
                       items={ufsMap}
                     />
                     <RNPickerSelect
+                      onUpArrow={() => {
+                        inputRefs.pickerUf.focus();
+                      }}
+                      ref={el => {
+                        inputRefs.pickerCity = el;
+                      }}
                       value={citySelected}
                       style={{...pickerSelectStyles}}
                       placeholder={{
@@ -103,7 +127,10 @@ const Home = () => {
                       onValueChange={value => setCitySelected(value)} 
                       />
 
-                    <RectButton style={styles.button} onPress={handleNavigatePoint}>
+                    <RectButton
+                      style={styles.button} 
+                      onPress={handleNavigatePoint}
+                    >
                         <View style={styles.buttonIcon}>
                             <Text>
                                 <Icon name="arrow-right" color="#FFF" size={24}/>
@@ -125,8 +152,8 @@ const pickerSelectStyles = StyleSheet.create({
         borderRadius: 10,
         marginBottom: 8,
         paddingHorizontal: 24,
-        fontSize: 16,
-      }
+        fontSize: 16, 
+      },
 });
 
 const styles = StyleSheet.create({
